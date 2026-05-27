@@ -1,236 +1,259 @@
 <!DOCTYPE html>
 <html lang="si">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-  <title>⌚ TimeCraft – සිංහල ඔරලෝසු වෙළඳසැල</title>
-  <script src="https://js.puter.com/v2/"></script>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, Arial, sans-serif; }
-    body { background: #f5f3ef; color: #2c2c2c; }
-    .container { max-width: 1300px; margin: 0 auto; padding: 20px; }
-    .header { display: flex; justify-content: space-between; align-items: center; background: #1a1a1a; color: #f0e3c9; padding: 15px 30px; border-radius: 20px; margin-bottom: 30px; flex-wrap: wrap; gap: 15px; }
-    .logo { font-size: 2rem; font-weight: bold; letter-spacing: 2px; color: #e4b45a; }
-    .nav-links { display: flex; gap: 25px; flex-wrap: wrap; }
-    .nav-links a { color: #f0e3c9; text-decoration: none; font-weight: 600; transition: 0.2s; cursor: pointer; }
-    .nav-links a:hover { color: #e4b45a; }
-    .cart-icon { background: #e4b45a; color: #1a1a1a; padding: 8px 18px; border-radius: 30px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px; }
-    .cart-icon span { background: white; color: black; border-radius: 50%; padding: 2px 8px; font-size: 0.9rem; }
-    .hero { background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%); border-radius: 30px; padding: 60px 40px; text-align: center; color: #f0e3c9; margin-bottom: 30px; }
-    .hero h1 { font-size: 3rem; margin-bottom: 15px; font-weight: 800; color: #e4b45a; }
-    .hero p { font-size: 1.3rem; margin-bottom: 25px; opacity: 0.9; }
-    .hero button { background: #e4b45a; border: none; padding: 14px 35px; border-radius: 50px; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: 0.3s; color: #1a1a1a; }
-    .hero button:hover { background: #d09c2c; transform: scale(1.03); }
-    .filter-bar { display: flex; gap: 15px; margin-bottom: 25px; flex-wrap: wrap; align-items: center; background: white; padding: 18px 25px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-    .filter-bar input, .filter-bar select { padding: 12px 18px; border-radius: 30px; border: 1px solid #ccc; font-size: 1rem; background: #fafafa; flex: 1; min-width: 160px; }
-    .filter-bar button { background: #1a1a1a; color: #e4b45a; border: none; padding: 12px 25px; border-radius: 30px; font-weight: bold; cursor: pointer; }
-    .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; margin-bottom: 40px; }
-    .product-card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 8px 25px rgba(0,0,0,0.08); transition: 0.3s; display: flex; flex-direction: column; }
-    .product-card:hover { transform: translateY(-8px); box-shadow: 0 15px 35px rgba(0,0,0,0.15); }
-    .product-img { width: 100%; height: 220px; object-fit: cover; background: #f0f0f0; }
-    .product-info { padding: 18px; flex-grow: 1; display: flex; flex-direction: column; gap: 8px; }
-    .product-brand { color: #e4b45a; font-weight: bold; font-size: 0.9rem; text-transform: uppercase; }
-    .product-name { font-weight: 700; font-size: 1.2rem; }
-    .product-price { font-size: 1.3rem; font-weight: bold; color: #1a1a1a; margin: 5px 0; }
-    .product-desc { font-size: 0.85rem; color: #666; flex-grow: 1; }
-    .add-to-cart-btn { background: #e4b45a; border: none; padding: 10px; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.2s; margin-top: 10px; }
-    .add-to-cart-btn:hover { background: #ca9a2c; }
-    .cart-modal { display: none; position: fixed; top: 0; right: 0; width: 100%; max-width: 420px; height: 100vh; background: white; box-shadow: -5px 0 25px rgba(0,0,0,0.2); z-index: 2000; padding: 25px; overflow-y: auto; flex-direction: column; gap: 20px; }
-    .cart-modal.active { display: flex; }
-    .cart-header { display: flex; justify-content: space-between; align-items: center; }
-    .cart-items { flex: 1; overflow-y: auto; }
-    .cart-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding: 12px 0; }
-    .cart-total { font-size: 1.4rem; font-weight: bold; margin-top: 15px; }
-    .close-cart { background: none; border: none; font-size: 1.8rem; cursor: pointer; }
-    #aiFloatingBtn { position: fixed; bottom: 30px; right: 30px; background: #e4b45a; color: #1a1a1a; border: none; border-radius: 60px; padding: 15px 25px; font-size: 1.1rem; font-weight: bold; cursor: pointer; box-shadow: 0 10px 25px rgba(228,180,90,0.5); z-index: 1500; transition: 0.3s; display: flex; align-items: center; gap: 8px; }
-    #aiFloatingBtn:hover { transform: scale(1.05); background: #ca9a2c; }
-    .ai-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 3000; }
-    .ai-modal.active { display: flex; }
-    .ai-chat { background: white; border-radius: 25px; padding: 30px; width: 90%; max-width: 650px; max-height: 85vh; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
-    .ai-chat h3 { color: #1a1a1a; border-bottom: 2px solid #e4b45a; padding-bottom: 10px; }
-    .quick-btns { display: flex; flex-wrap: wrap; gap: 8px; }
-    .quick-btns button { background: #f0e3c9; border: none; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; font-weight: 600; }
-    #aiPrompt { width: 100%; padding: 14px; border-radius: 15px; border: 1px solid #ccc; font-size: 1rem; resize: vertical; }
-    #aiResponse { background: #f8f8f8; padding: 18px; border-radius: 15px; min-height: 80px; white-space: pre-wrap; font-size: 0.95rem; max-height: 250px; overflow-y: auto; }
-    .ai-buttons { display: flex; gap: 12px; justify-content: flex-end; }
-    .btn-primary { background: #e4b45a; border: none; padding: 12px 25px; border-radius: 30px; font-weight: bold; cursor: pointer; }
-    .btn-secondary { background: #ccc; border: none; padding: 12px 25px; border-radius: 30px; cursor: pointer; }
-    .footer { text-align: center; padding: 25px; color: #888; margin-top: 20px; }
-    @media (max-width: 600px) { .hero h1 { font-size: 2rem; } .filter-bar { flex-direction: column; } }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>⌚ TimeCraft – සිංහල ඔරලෝසු වෙළඳසැල (පුහුණු AI)</title>
+    <script src="https://js.puter.com/v2/"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, Arial, sans-serif; }
+        body { background: #f5f3ef; color: #2c2c2c; }
+        .container { max-width: 1300px; margin: 0 auto; padding: 20px; }
+        .header { display: flex; justify-content: space-between; align-items: center; background: #1a1a1a; color: #f0e3c9; padding: 15px 30px; border-radius: 20px; margin-bottom: 30px; flex-wrap: wrap; gap: 15px; }
+        .logo { font-size: 2rem; font-weight: bold; letter-spacing: 2px; color: #e4b45a; }
+        .nav-links { display: flex; gap: 25px; flex-wrap: wrap; }
+        .nav-links a { color: #f0e3c9; text-decoration: none; font-weight: 600; transition: 0.2s; cursor: pointer; }
+        .nav-links a:hover { color: #e4b45a; }
+        .cart-icon { background: #e4b45a; color: #1a1a1a; padding: 8px 18px; border-radius: 30px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+        .cart-icon span { background: white; color: black; border-radius: 50%; padding: 2px 8px; font-size: 0.9rem; }
+        .hero { background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%); border-radius: 30px; padding: 60px 40px; text-align: center; color: #f0e3c9; margin-bottom: 30px; }
+        .hero h1 { font-size: 3rem; margin-bottom: 15px; font-weight: 800; color: #e4b45a; }
+        .hero p { font-size: 1.3rem; margin-bottom: 25px; opacity: 0.9; }
+        .hero button { background: #e4b45a; border: none; padding: 14px 35px; border-radius: 50px; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: 0.3s; color: #1a1a1a; }
+        .hero button:hover { background: #d09c2c; transform: scale(1.03); }
+        .filter-bar { display: flex; gap: 15px; margin-bottom: 25px; flex-wrap: wrap; align-items: center; background: white; padding: 18px 25px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .filter-bar input, .filter-bar select { padding: 12px 18px; border-radius: 30px; border: 1px solid #ccc; font-size: 1rem; background: #fafafa; flex: 1; min-width: 160px; }
+        .filter-bar button { background: #1a1a1a; color: #e4b45a; border: none; padding: 12px 25px; border-radius: 30px; font-weight: bold; cursor: pointer; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; margin-bottom: 40px; }
+        .product-card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 8px 25px rgba(0,0,0,0.08); transition: 0.3s; display: flex; flex-direction: column; }
+        .product-card:hover { transform: translateY(-8px); box-shadow: 0 15px 35px rgba(0,0,0,0.15); }
+        .product-img { width: 100%; height: 220px; object-fit: cover; background: #f0f0f0; }
+        .product-info { padding: 18px; flex-grow: 1; display: flex; flex-direction: column; gap: 8px; }
+        .product-brand { color: #e4b45a; font-weight: bold; font-size: 0.9rem; text-transform: uppercase; }
+        .product-name { font-weight: 700; font-size: 1.2rem; }
+        .product-price { font-size: 1.3rem; font-weight: bold; color: #1a1a1a; margin: 5px 0; }
+        .product-desc { font-size: 0.85rem; color: #666; flex-grow: 1; }
+        .add-to-cart-btn { background: #e4b45a; border: none; padding: 10px; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.2s; margin-top: 10px; }
+        .add-to-cart-btn:hover { background: #ca9a2c; }
+        .cart-modal { display: none; position: fixed; top: 0; right: 0; width: 100%; max-width: 420px; height: 100vh; background: white; box-shadow: -5px 0 25px rgba(0,0,0,0.2); z-index: 2000; padding: 25px; overflow-y: auto; flex-direction: column; gap: 20px; }
+        .cart-modal.active { display: flex; }
+        .cart-header { display: flex; justify-content: space-between; align-items: center; }
+        .cart-items { flex: 1; overflow-y: auto; }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding: 12px 0; }
+        .cart-total { font-size: 1.4rem; font-weight: bold; margin-top: 15px; }
+        .close-cart { background: none; border: none; font-size: 1.8rem; cursor: pointer; }
+        #aiFloatingBtn { position: fixed; bottom: 30px; right: 30px; background: #e4b45a; color: #1a1a1a; border: none; border-radius: 60px; padding: 15px 25px; font-size: 1.1rem; font-weight: bold; cursor: pointer; box-shadow: 0 10px 25px rgba(228,180,90,0.5); z-index: 1500; transition: 0.3s; display: flex; align-items: center; gap: 8px; }
+        #aiFloatingBtn:hover { transform: scale(1.05); background: #ca9a2c; }
+        .ai-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 3000; }
+        .ai-modal.active { display: flex; }
+        .ai-chat { background: white; border-radius: 25px; padding: 30px; width: 90%; max-width: 650px; max-height: 85vh; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+        .ai-chat h3 { color: #1a1a1a; border-bottom: 2px solid #e4b45a; padding-bottom: 10px; }
+        .quick-btns { display: flex; flex-wrap: wrap; gap: 8px; }
+        .quick-btns button { background: #f0e3c9; border: none; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; font-weight: 600; }
+        #aiPrompt { width: 100%; padding: 14px; border-radius: 15px; border: 1px solid #ccc; font-size: 1rem; resize: vertical; }
+        #aiResponse { background: #f8f8f8; padding: 18px; border-radius: 15px; min-height: 80px; white-space: pre-wrap; font-size: 0.95rem; max-height: 250px; overflow-y: auto; }
+        .ai-buttons { display: flex; gap: 12px; justify-content: flex-end; }
+        .btn-primary { background: #e4b45a; border: none; padding: 12px 25px; border-radius: 30px; font-weight: bold; cursor: pointer; }
+        .btn-secondary { background: #ccc; border: none; padding: 12px 25px; border-radius: 30px; cursor: pointer; }
+        .footer { text-align: center; padding: 25px; color: #888; margin-top: 20px; }
+        @media (max-width: 600px) { .hero h1 { font-size: 2rem; } .filter-bar { flex-direction: column; } }
+    </style>
 </head>
 <body>
 <div class="container">
-  <div class="header">
-    <div class="logo">⌚ TIMECRAFT</div>
-    <div class="nav-links">
-      <a onclick="document.getElementById('productsSection').scrollIntoView({behavior:'smooth'})">සියලු ඔරලෝසු</a>
-      <a onclick="document.getElementById('productsSection').scrollIntoView({behavior:'smooth'})">පිරිමි</a>
-      <a onclick="document.getElementById('productsSection').scrollIntoView({behavior:'smooth'})">ගැහැණු</a>
+    <div class="header">
+        <div class="logo">⌚ TIMECRAFT</div>
+        <div class="nav-links">
+            <a onclick="document.getElementById('productsSection').scrollIntoView({behavior:'smooth'})">සියලු ඔරලෝසු</a>
+            <a onclick="document.getElementById('productsSection').scrollIntoView({behavior:'smooth'})">පිරිමි</a>
+            <a onclick="document.getElementById('productsSection').scrollIntoView({behavior:'smooth'})">ගැහැණු</a>
+        </div>
+        <div class="cart-icon" onclick="openCart()">🛒 කරත්තය <span id="cartCount">0</span></div>
     </div>
-    <div class="cart-icon" onclick="openCart()">🛒 කරත්තය <span id="cartCount">0</span></div>
-  </div>
-  <div class="hero">
-    <h1>කාලානුරූපී අලංකාරය සොයාගන්න</h1>
-    <p>සම්භාව්‍ය ඇනලොග් සිට නවීන ස්මාර්ට් ඔරලෝසු දක්වා – ඔබේ මැණික් කටුවට ගැලපෙන සහකරු සොයාගන්න.</p>
-    <button onclick="document.getElementById('productsSection').scrollIntoView({behavior:'smooth'})">🛍️ දැන්ම සාප්පු යන්න</button>
-  </div>
-  <div class="filter-bar" id="productsSection">
-    <input type="text" id="searchName" placeholder="🔍 නම සෙවීම..." oninput="applyFilters()">
-    <select id="brandFilter" onchange="applyFilters()">
-      <option value="">සියලු වෙළඳ නාම</option>
-      <option value="Rolex">Rolex</option>
-      <option value="Casio">Casio</option>
-      <option value="Fossil">Fossil</option>
-      <option value="Timex">Timex</option>
-      <option value="Apple">Apple</option>
-      <option value="Samsung">Samsung</option>
-    </select>
-    <input type="number" id="minPrice" placeholder="අවම මිල (රු.)" oninput="applyFilters()">
-    <input type="number" id="maxPrice" placeholder="උපරිම මිල (රු.)" oninput="applyFilters()">
-    <button onclick="applyFilters()">පෙරහන් යොදන්න</button>
-  </div>
-  <div class="product-grid" id="productGrid"></div>
-  <div class="footer">© 2025 TimeCraft – AI බලයෙන් යුත් ඔරලෝසු වෙළඳසැල. සියලු හිමිකම් ඇවිරිණි.</div>
+    <div class="hero">
+        <h1>කාලානුරූපී අලංකාරය සොයාගන්න</h1>
+        <p>සම්භාව්‍ය ඇනලොග් සිට නවීන ස්මාර්ට් ඔරලෝසු දක්වා – ඔබේ මැණික් කටුවට ගැලපෙන සහකරු සොයාගන්න.</p>
+        <button onclick="document.getElementById('productsSection').scrollIntoView({behavior:'smooth'})">🛍️ දැන්ම සාප්පු යන්න</button>
+    </div>
+    <div class="filter-bar" id="productsSection">
+        <input type="text" id="searchName" placeholder="🔍 නම සෙවීම..." oninput="applyFilters()">
+        <select id="brandFilter" onchange="applyFilters()">
+            <option value="">සියලු වෙළඳ නාම</option>
+            <option value="Rolex">Rolex</option>
+            <option value="Casio">Casio</option>
+            <option value="Fossil">Fossil</option>
+            <option value="Timex">Timex</option>
+            <option value="Apple">Apple</option>
+            <option value="Samsung">Samsung</option>
+        </select>
+        <input type="number" id="minPrice" placeholder="අවම මිල (රු.)" oninput="applyFilters()">
+        <input type="number" id="maxPrice" placeholder="උපරිම මිල (රු.)" oninput="applyFilters()">
+        <button onclick="applyFilters()">පෙරහන් යොදන්න</button>
+    </div>
+    <div class="product-grid" id="productGrid"></div>
+    <div class="footer">© 2025 TimeCraft – AI බලයෙන් යුත් ඔරලෝසු වෙළඳසැල. සියලු හිමිකම් ඇවිරිණි.</div>
 </div>
 
 <div class="cart-modal" id="cartModal">
-  <div class="cart-header"><h2>🛒 ඔබේ කරත්තය</h2><button class="close-cart" onclick="closeCart()">&times;</button></div>
-  <div class="cart-items" id="cartItems"></div>
-  <div class="cart-total">මුළු මුදල: රු. <span id="cartTotal">0</span></div>
-  <button class="btn-primary" onclick="alert('ඔබගේ මිලදී ගැනීමට ස්තුතියි!')">✅ පිටවීම</button>
+    <div class="cart-header"><h2>🛒 ඔබේ කරත්තය</h2><button class="close-cart" onclick="closeCart()">&times;</button></div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-total">මුළු මුදල: රු. <span id="cartTotal">0</span></div>
+    <button class="btn-primary" onclick="alert('ඔබගේ මිලදී ගැනීමට ස්තුතියි!')">✅ පිටවීම</button>
 </div>
 
 <button id="aiFloatingBtn" onclick="openAIModal()">🤖 AI සහායක</button>
 <div class="ai-modal" id="aiModal">
-  <div class="ai-chat">
-    <h3>🤖 AI ඔරලෝසු විශේෂඥ</h3>
-    <div class="quick-btns">
-      <button onclick="askQuick('රු.5000 ට අඩු ඔරලෝසු පෙන්වන්න')">💰 රු.5000 ට අඩු</button>
-      <button onclick="askQuick('කාර්යාලයට සුදුසු ඇනලොග් ඔරලෝසු')">👔 කාර්යාල ඇනලොග්</button>
-      <button onclick="askQuick('මගේ පෙම්වතාට තෑග්ගක් නිර්දේශ කරන්න')">🎁 ඔහුට තෑගි</button>
-      <button onclick="askQuick('ලෙදර් පටි සහිත ඔරලෝසු පෙන්වන්න')">🧵 ලෙදර් පටි</button>
-      <button onclick="askQuick('වඩාත්ම ජනප්‍රිය ඔරලෝසු 3')">⭐ ජනප්‍රිය තේරීම්</button>
+    <div class="ai-chat">
+        <h3>🤖 TimeCraft AI විශේෂඥ (පුහුණු AI)</h3>
+        <div class="quick-btns">
+            <button onclick="askQuick('රු.5000 ට අඩු ඔරලෝසු පෙන්වන්න')">💰 රු.5000 ට අඩු</button>
+            <button onclick="askQuick('කාර්යාලයට සුදුසු ඇනලොග් ඔරලෝසු')">👔 කාර්යාල ඇනලොග්</button>
+            <button onclick="askQuick('මගේ පෙම්වතාට තෑග්ගක් නිර්දේශ කරන්න')">🎁 ඔහුට තෑගි</button>
+            <button onclick="askQuick('ලෙදර් පටි සහිත ඔරලෝසු පෙන්වන්න')">🧵 ලෙදර් පටි</button>
+            <button onclick="askQuick('වඩාත්ම ජනප්‍රිය ඔරලෝසු 3')">⭐ ජනප්‍රිය තේරීම්</button>
+            <button onclick="askQuick('ඔබේ ගෙවීම් ක්‍රම මොනවාද?')">💳 ගෙවීම්</button>
+            <button onclick="askQuick('බෙදාහැරීමේ කාලය කීයද?')">🚚 බෙදාහැරීම</button>
+        </div>
+        <textarea id="aiPrompt" rows="3" placeholder="ඔරලෝසු එකතුව, මිල, නිර්දේශ ගැන අහන්න..."></textarea>
+        <div id="aiResponse">ඔබේ පිළිතුර මෙහි දිස්වනු ඇත...</div>
+        <div class="ai-buttons">
+            <button id="askAiBtn" class="btn-primary" onclick="askAI()">🔮 අහන්න</button>
+            <button class="btn-secondary" onclick="closeAIModal()">වසන්න</button>
+        </div>
     </div>
-    <textarea id="aiPrompt" rows="3" placeholder="ඔරලෝසු එකතුව, මිල, නිර්දේශ ගැන අහන්න..."></textarea>
-    <div id="aiResponse">ඔබේ පිළිතුර මෙහි දිස්වනු ඇත...</div>
-    <div class="ai-buttons">
-      <button id="askAiBtn" class="btn-primary" onclick="askAI()">🔮 අහන්න</button>
-      <button class="btn-secondary" onclick="closeAIModal()">වසන්න</button>
-    </div>
-  </div>
 </div>
 
 <script>
-  // ඔරලෝසු දත්ත (නම් සිංහලෙන් නොවේ – නමුත් විස්තර සිංහල කළ හැක)
-  const products = [
-    { id:1, name:"Classic Datejust", brand:"Rolex", price:12500, image:"https://placehold.co/400x400/1a1a1a/ffffff?text=Rolex+Datejust", category:"Analog", strap:"Metal", desc:"අලංකාර ස්වයංක්‍රීය ඔරලෝසුව, දින කවුළුවක් සහිතයි. මල නොබැඳෙන වානේ ආවරණය." },
-    { id:2, name:"G-Shock Master", brand:"Casio", price:4500, image:"https://placehold.co/400x400/2c3e50/ffffff?text=Casio+G-Shock", category:"Digital", strap:"Rubber", desc:"ශක්තිමත් සූර්ය බලයෙන් ක්‍රියා කරන ඩිජිටල් ඔරලෝසුව, මීටර් 200 ජල ප්‍රතිරෝධී." },
-    { id:3, name:"Chronograph Sport", brand:"Fossil", price:7800, image:"https://placehold.co/400x400/8b6f4c/ffffff?text=Fossil+Chronograph", category:"Analog", strap:"Leather", desc:"දුඹුරු ලෙදර් පටිය, ක්වාර්ට්ස් චලනය, කාලමාපක ඩයල්." },
-    { id:4, name:"Weekender 40", brand:"Timex", price:3200, image:"https://placehold.co/400x400/3d5a80/ffffff?text=Timex+Weekender", category:"Analog", strap:"Fabric", desc:"සැහැල්ලු රෙදි පටිය, Indiglo රාත්‍රී ආලෝකය, 40mm ආවරණය." },
-    { id:5, name:"Apple Watch SE", brand:"Apple", price:15800, image:"https://placehold.co/400x400/000000/ffffff?text=Apple+Watch+SE", category:"Smart", strap:"Silicone", desc:"ශාරීරික යෝග්‍යතා ලුහුබැඳීම, හෘද ස්පන්දන මොනිටරය, GPS සහිත ස්මාර්ට් ඔරලෝසුව." },
-    { id:6, name:"Galaxy Watch 6", brand:"Samsung", price:11200, image:"https://placehold.co/400x400/1428a0/ffffff?text=Samsung+Galaxy+Watch", category:"Smart", strap:"Silicone", desc:"Wear OS ස්මාර්ට් ඔරලෝසුව, ශරීර සංයුති විශ්ලේෂණය, නින්ද ලුහුබැඳීම." },
-    { id:7, name:"Edifice Chronograph", brand:"Casio", price:6200, image:"https://placehold.co/400x400/4a4e69/ffffff?text=Casio+Edifice", category:"Analog", strap:"Metal", desc:"මල නොබැඳෙන වානේ පටිය, මීටර් 100 ජල ප්‍රතිරෝධය, නැවතුම් ඔරලෝසුව." },
-    { id:8, name:"Fossil Hybrid HR", brand:"Fossil", price:9500, image:"https://placehold.co/400x400/5d5c61/ffffff?text=Fossil+Hybrid", category:"Hybrid", strap:"Leather", desc:"සැමවිටම ක්‍රියාත්මක e-ink සංදර්ශකය සහිත දෙමුහුන් ස්මාර්ට් ඔරලෝසුව." },
-    { id:9, name:"Easy Reader 38mm", brand:"Timex", price:2800, image:"https://placehold.co/400x400/9a8c98/ffffff?text=Timex+Easy+Reader", category:"Analog", strap:"Leather", desc:"සම්භාව්‍ය මෝස්තරය, පහසුවෙන් කියවිය හැකි ඩයල් එක, දැරිය හැකි අලංකාරය." },
-    { id:10, name:"Rolex Submariner", brand:"Rolex", price:28500, image:"https://placehold.co/400x400/1b1b1b/ffffff?text=Rolex+Submariner", category:"Analog", strap:"Metal", desc:"පුරාවෘත්ත කිමිදුම් ඔරලෝසුව, සෙරමික් බෙසල්, ස්වයංක්‍රීය චලනය." },
-    { id:11, name:"Apple Watch Ultra 2", brand:"Apple", price:24500, image:"https://placehold.co/400x400/ff9f1c/ffffff?text=Apple+Watch+Ultra", category:"Smart", strap:"Titanium", desc:"ශක්තිමත් වික්‍රමාන්විත ස්මාර්ට් ඔරලෝසුව, dual-frequency GPS, පැය 36 බැටරි." },
-    { id:12, name:"Galaxy Fit 3", brand:"Samsung", price:5400, image:"https://placehold.co/400x400/0077b6/ffffff?text=Samsung+Fit", category:"Fitness", strap:"Silicone", desc:"සැහැල්ලු යෝග්‍යතා පටිය, AMOLED සංදර්ශකය, නින්ද පුහුණුකරු." }
-  ];
+    // ========== නිෂ්පාදන දත්ත (සිංහල විස්තර සහිත) ==========
+    const products = [
+        { id:1, name:"Classic Datejust", brand:"Rolex", price:12500, image:"https://placehold.co/400x400/1a1a1a/ffffff?text=Rolex+Datejust", category:"Analog", strap:"Metal", desc:"අලංකාර ස්වයංක්‍රීය ඔරලෝසුව, දින කවුළුවක් සහිතයි. මල නොබැඳෙන වානේ ආවරණය." },
+        { id:2, name:"G-Shock Master", brand:"Casio", price:4500, image:"https://placehold.co/400x400/2c3e50/ffffff?text=Casio+G-Shock", category:"Digital", strap:"Rubber", desc:"ශක්තිමත් සූර්ය බලයෙන් ක්‍රියා කරන ඩිජිටල් ඔරලෝසුව, මීටර් 200 ජල ප්‍රතිරෝධී." },
+        { id:3, name:"Chronograph Sport", brand:"Fossil", price:7800, image:"https://placehold.co/400x400/8b6f4c/ffffff?text=Fossil+Chronograph", category:"Analog", strap:"Leather", desc:"දුඹුරු ලෙදර් පටිය, ක්වාර්ට්ස් චලනය, කාලමාපක ඩයල්." },
+        { id:4, name:"Weekender 40", brand:"Timex", price:3200, image:"https://placehold.co/400x400/3d5a80/ffffff?text=Timex+Weekender", category:"Analog", strap:"Fabric", desc:"සැහැල්ලු රෙදි පටිය, Indiglo රාත්‍රී ආලෝකය, 40mm ආවරණය." },
+        { id:5, name:"Apple Watch SE", brand:"Apple", price:15800, image:"https://placehold.co/400x400/000000/ffffff?text=Apple+Watch+SE", category:"Smart", strap:"Silicone", desc:"ශාරීරික යෝග්‍යතා ලුහුබැඳීම, හෘද ස්පන්දන මොනිටරය, GPS සහිත ස්මාර්ට් ඔරලෝසුව." },
+        { id:6, name:"Galaxy Watch 6", brand:"Samsung", price:11200, image:"https://placehold.co/400x400/1428a0/ffffff?text=Samsung+Galaxy+Watch", category:"Smart", strap:"Silicone", desc:"Wear OS ස්මාර්ට් ඔරලෝසුව, ශරීර සංයුති විශ්ලේෂණය, නින්ද ලුහුබැඳීම." },
+        { id:7, name:"Edifice Chronograph", brand:"Casio", price:6200, image:"https://placehold.co/400x400/4a4e69/ffffff?text=Casio+Edifice", category:"Analog", strap:"Metal", desc:"මල නොබැඳෙන වානේ පටිය, මීටර් 100 ජල ප්‍රතිරෝධය, නැවතුම් ඔරලෝසුව." },
+        { id:8, name:"Fossil Hybrid HR", brand:"Fossil", price:9500, image:"https://placehold.co/400x400/5d5c61/ffffff?text=Fossil+Hybrid", category:"Hybrid", strap:"Leather", desc:"සැමවිටම ක්‍රියාත්මක e-ink සංදර්ශකය සහිත දෙමුහුන් ස්මාර්ට් ඔරලෝසුව." },
+        { id:9, name:"Easy Reader 38mm", brand:"Timex", price:2800, image:"https://placehold.co/400x400/9a8c98/ffffff?text=Timex+Easy+Reader", category:"Analog", strap:"Leather", desc:"සම්භාව්‍ය මෝස්තරය, පහසුවෙන් කියවිය හැකි ඩයල් එක, දැරිය හැකි අලංකාරය." },
+        { id:10, name:"Rolex Submariner", brand:"Rolex", price:28500, image:"https://placehold.co/400x400/1b1b1b/ffffff?text=Rolex+Submariner", category:"Analog", strap:"Metal", desc:"පුරාවෘත්ත කිමිදුම් ඔරලෝසුව, සෙරමික් බෙසල්, ස්වයංක්‍රීය චලනය." },
+        { id:11, name:"Apple Watch Ultra 2", brand:"Apple", price:24500, image:"https://placehold.co/400x400/ff9f1c/ffffff?text=Apple+Watch+Ultra", category:"Smart", strap:"Titanium", desc:"ශක්තිමත් වික්‍රමාන්විත ස්මාර්ට් ඔරලෝසුව, dual-frequency GPS, පැය 36 බැටරි." },
+        { id:12, name:"Galaxy Fit 3", brand:"Samsung", price:5400, image:"https://placehold.co/400x400/0077b6/ffffff?text=Samsung+Fit", category:"Fitness", strap:"Silicone", desc:"සැහැල්ලු යෝග්‍යතා පටිය, AMOLED සංදර්ශකය, නින්ද පුහුණුකරු." }
+    ];
 
-  let cart = [];
+    let cart = [];
 
-  function renderProducts(filtered = products) {
-    const grid = document.getElementById('productGrid');
-    grid.innerHTML = '';
-    if(!filtered.length){ grid.innerHTML='<p style="grid-column:1/-1;text-align:center;padding:40px;">කිසිදු ඔරලෝසුවක් හමු නොවීය.</p>'; return; }
-    filtered.forEach(p=>{
-      const card = document.createElement('div');
-      card.className = 'product-card';
-      card.innerHTML = `<img src="${p.image}" alt="${p.name}" class="product-img">
-        <div class="product-info"><span class="product-brand">${p.brand}</span>
-        <h3 class="product-name">${p.name}</h3><p class="product-price">රු. ${p.price.toLocaleString()}</p>
-        <p class="product-desc">${p.desc}</p>
-        <button class="add-to-cart-btn" onclick="addToCart(${p.id})">🛒 කරත්තයට එක් කරන්න</button></div>`;
-      grid.appendChild(card);
-    });
-  }
-
-  function applyFilters(){
-    const s = document.getElementById('searchName').value.toLowerCase().trim();
-    const brand = document.getElementById('brandFilter').value;
-    const min = parseFloat(document.getElementById('minPrice').value)||0;
-    const max = parseFloat(document.getElementById('maxPrice').value)||Infinity;
-    const filtered = products.filter(p=> p.name.toLowerCase().includes(s) && (!brand||p.brand===brand) && p.price>=min && p.price<=max );
-    renderProducts(filtered);
-  }
-
-  function addToCart(id){
-    const p = products.find(p=>p.id===id);
-    const existing = cart.find(i=>i.id===id);
-    existing ? existing.quantity++ : cart.push({...p, quantity:1});
-    updateCartUI();
-  }
-  function removeFromCart(id){ cart = cart.filter(i=>i.id!==id); updateCartUI(); }
-  function updateCartUI(){
-    document.getElementById('cartCount').textContent = cart.reduce((s,i)=>s+i.quantity,0);
-    document.getElementById('cartTotal').textContent = cart.reduce((s,i)=>s+i.price*i.quantity,0).toLocaleString();
-    const itemsDiv = document.getElementById('cartItems');
-    itemsDiv.innerHTML = cart.map(i=>`<div class="cart-item"><div><strong>${i.name}</strong> (x${i.quantity})</div><div>රු. ${(i.price*i.quantity).toLocaleString()}</div><button style="background:none;border:none;color:red;cursor:pointer;" onclick="removeFromCart(${i.id})">🗑️</button></div>`).join('');
-  }
-  function openCart(){ document.getElementById('cartModal').classList.add('active'); }
-  function closeCart(){ document.getElementById('cartModal').classList.remove('active'); }
-
-  // AI සහායක (සිංහලෙන් පිළිතුරු)
-  function buildWatchContext(){
-    return `ඔබ TimeCraft වෙළඳසැලේ ඔරලෝසු විශේෂඥයෙක්. අපගේ නාමාවලිය:\n${products.map(p=>`- ${p.name} (${p.brand}), රු.${p.price}, පටිය: ${p.strap}, වර්ගය: ${p.category}`).join('\n')}\n\nපාරිභෝගිකයාට කෙටියෙන්, ආකර්ෂණීයව පිළිතුරු දෙන්න. මිල, පටිය සහ විශේෂාංග සඳහන් කරන්න. මිල පරාසයක් ඇසුවොත් ඊට ගැලපෙන ඔරලෝසු පමණක් ලැයිස්තුගත කරන්න. **සියලු පිළිතුරු සිංහලෙන් දෙන්න.**`;
-  }
-
-  async function askAI(){
-    const prompt = document.getElementById('aiPrompt').value.trim();
-    const respDiv = document.getElementById('aiResponse');
-    const btn = document.getElementById('askAiBtn');
-    if(!prompt){ respDiv.innerText='⚠️ කරුණාකර ප්‍රශ්නයක් අසන්න.'; return; }
-    btn.disabled=true; btn.textContent='⏳ සිතමින්...'; respDiv.innerText='AI උපදෙස් ලබා ගනිමින්...';
-    const systemContext = buildWatchContext();
-    const fullPrompt = `${systemContext}\n\nපාරිභෝගික: ${prompt}`;
-
-    // 1) Puter.js (දෛනික සීමාව නැවත පිරෙනු ඇත)
-    try {
-      const answer = await puter.ai.chat(fullPrompt, { model: 'gpt-4o' });
-      respDiv.innerText = answer;
-    } catch(putErr) {
-      console.warn('Puter අසාර්ථකයි, Pollinations වෙත මාරු වේ...', putErr);
-      // 2) Pollinations (නිවැරදි messages ආකෘතිය)
-      try {
-        const res = await fetch('https://text.pollinations.ai/', {
-          method: 'POST',
-          headers: {'Content-Type':'application/json'},
-          body: JSON.stringify({ messages: [{role:'system',content:systemContext},{role:'user',content:prompt}] })
+    function renderProducts(filtered = products) {
+        const grid = document.getElementById('productGrid');
+        grid.innerHTML = '';
+        if(!filtered.length){ grid.innerHTML='<p style="grid-column:1/-1;text-align:center;padding:40px;">කිසිදු ඔරලෝසුවක් හමු නොවීය.</p>'; return; }
+        filtered.forEach(p=>{
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.innerHTML = `<img src="${p.image}" alt="${p.name}" class="product-img">
+              <div class="product-info"><span class="product-brand">${p.brand}</span>
+              <h3 class="product-name">${p.name}</h3><p class="product-price">රු. ${p.price.toLocaleString()}</p>
+              <p class="product-desc">${p.desc}</p>
+              <button class="add-to-cart-btn" onclick="addToCart(${p.id})">🛒 කරත්තයට එක් කරන්න</button></div>`;
+            grid.appendChild(card);
         });
-        if(!res.ok) throw new Error(`HTTP ${res.status}`);
-        const text = await res.text();
-        respDiv.innerText = text || 'පිළිතුරක් නැත.';
-      } catch(pollErr) {
-        // 3) අවසන් විකල්පය: GET endpoint
-        try {
-          const getRes = await fetch(`https://text.pollinations.ai/${encodeURIComponent(prompt)}`);
-          respDiv.innerText = await getRes.text() || 'පිළිතුරක් නැත.';
-        } catch(e) {
-          respDiv.innerText = `❌ AI දැනට ලබා ගත නොහැක. කරුණාකර පසුව උත්සාහ කරන්න.`;
-        }
-      }
     }
-    btn.disabled=false; btn.textContent='🔮 අහන්න';
-  }
 
-  function askQuick(txt){ document.getElementById('aiPrompt').value=txt; askAI(); }
-  function openAIModal(){ document.getElementById('aiModal').classList.add('active'); document.getElementById('aiPrompt').focus(); }
-  function closeAIModal(){ document.getElementById('aiModal').classList.remove('active'); document.getElementById('aiResponse').innerText='ඔබේ පිළිතුර මෙහි දිස්වනු ඇත...'; document.getElementById('aiPrompt').value=''; }
+    function applyFilters(){
+        const s = document.getElementById('searchName').value.toLowerCase().trim();
+        const brand = document.getElementById('brandFilter').value;
+        const min = parseFloat(document.getElementById('minPrice').value)||0;
+        const max = parseFloat(document.getElementById('maxPrice').value)||Infinity;
+        const filtered = products.filter(p=> p.name.toLowerCase().includes(s) && (!brand||p.brand===brand) && p.price>=min && p.price<=max );
+        renderProducts(filtered);
+    }
 
-  window.onclick = function(e){ if(e.target===document.getElementById('aiModal')) closeAIModal(); if(e.target===document.getElementById('cartModal')) closeCart(); }
+    function addToCart(id){ const p = products.find(p=>p.id===id); const existing = cart.find(i=>i.id===id); existing ? existing.quantity++ : cart.push({...p, quantity:1}); updateCartUI(); }
+    function removeFromCart(id){ cart = cart.filter(i=>i.id!==id); updateCartUI(); }
+    function updateCartUI(){
+        document.getElementById('cartCount').textContent = cart.reduce((s,i)=>s+i.quantity,0);
+        document.getElementById('cartTotal').textContent = cart.reduce((s,i)=>s+i.price*i.quantity,0).toLocaleString();
+        document.getElementById('cartItems').innerHTML = cart.map(i=>`<div class="cart-item"><div><strong>${i.name}</strong> (x${i.quantity})</div><div>රු. ${(i.price*i.quantity).toLocaleString()}</div><button style="background:none;border:none;color:red;cursor:pointer;" onclick="removeFromCart(${i.id})">🗑️</button></div>`).join('');
+    }
+    function openCart(){ document.getElementById('cartModal').classList.add('active'); }
+    function closeCart(){ document.getElementById('cartModal').classList.remove('active'); }
 
-  renderProducts(); updateCartUI();
+    // ========== AI "පුහුණු" දැනුම් පදනම ==========
+    function buildWatchContext(){
+        return `ඔබ TimeCraft නම් ඔරලෝසු වෙළඳසැලේ AI සහායකයායි. පහත දත්ත පමණක් භාවිතා කර පිළිතුරු දෙන්න. සියලු පිළිතුරු සිංහලෙන්, කෙටියෙන්, ආකර්ශනීයව දෙන්න.
+
+=== ඔරලෝසු නාමාවලිය ===
+${products.map(p=>`- ${p.name} (${p.brand}) | මිල: රු.${p.price} | පටිය: ${p.strap} | වර්ගය: ${p.category} | විස්තර: ${p.desc}`).join('\n')}
+
+=== නිතර අසන ප්‍රශ්න (FAQ) ===
+ප්‍ර: ඔබේ ගෙවීම් ක්‍රම මොනවාද?
+පිළිතුර: අපි මුදල්, ක්‍රෙඩිට් කාඩ්, බැංකු හුවමාරු, Frimi, MintPay වැනි මාර්ගගත ක්‍රම පිළිගනිමු.
+
+ප්‍ර: බෙදාහැරීමේ ගාස්තුව කීයද?
+පිළිතුර: දිවයින පුරා බෙදාහැරීම රු.350 කි. රු.10,000 ට වැඩි ඇණවුම් සඳහා නොමිලේ.
+
+ප්‍ර: භාණ්ඩ ලැබීමට කොපමණ කාලයක් ගතවේද?
+පිළිතුර: කොළඹ හා ප්‍රධාන නගරවලට දින 1-2, පිටත ප්‍රදේශවලට දින 3-4.
+
+ප්‍ර: වගකීමක් තිබේද?
+පිළිතුර: සියලු ඔරලෝසු සඳහා වසර 1ක නිෂ්පාදක වගකීමක් ඇත.
+
+ප්‍ර: භාණ්ඩයක් ආපසු ලබා දිය හැකිද?
+පිළිතුර: මිලදී ගෙන දින 7ක් ඇතුළත, භාවිත නොකළ තත්ත්වයේ ඇත්නම් ආපසු ලබා දිය හැක.
+
+=== ප්‍රයෝජනවත් උපදෙස් ===
+- කාර්යාලයට ගැලපෙන ඔරලෝසු: Casio Edifice, Timex Weekender, Fossil Chronograph.
+- තෑගි සඳහා: G-Shock Master, Apple Watch SE, Fossil Hybrid HR.
+- අඩු මිල (රු.5000 ට අඩු): Timex Easy Reader, G-Shock Master, Casio Edifice.
+- ඉහළ මිල: Rolex Submariner, Apple Watch Ultra 2.
+
+පාරිභෝගික ප්‍රශ්නයට සෘජු, නිවැරදි පිළිතුරක් දෙන්න. ප්‍රශ්නය FAQ එකේ ඇත්නම් එම පිළිතුරම භාවිතා කරන්න.`;
+    }
+
+    async function askAI(){
+        const prompt = document.getElementById('aiPrompt').value.trim();
+        const respDiv = document.getElementById('aiResponse');
+        const btn = document.getElementById('askAiBtn');
+        if(!prompt){ respDiv.innerText='⚠️ කරුණාකර ප්‍රශ්නයක් අසන්න.'; return; }
+        btn.disabled=true; btn.textContent='⏳ සිතමින්...'; respDiv.innerText='AI උපදෙස් ලබා ගනිමින්...';
+        const systemContext = buildWatchContext();
+        const fullPrompt = `${systemContext}\n\nපාරිභෝගික: ${prompt}`;
+
+        // 1) Puter.js (daily free, reset tomorrow)
+        try {
+            const answer = await puter.ai.chat(fullPrompt, { model: 'gpt-4o' });
+            respDiv.innerText = answer;
+        } catch(putErr) {
+            console.warn('Puter fail -> Pollinations', putErr);
+            // 2) Pollinations POST (unlimited free)
+            try {
+                const res = await fetch('https://text.pollinations.ai/', {
+                    method: 'POST',
+                    headers: {'Content-Type':'application/json'},
+                    body: JSON.stringify({ messages: [{role:'system',content:systemContext},{role:'user',content:prompt}] })
+                });
+                if(!res.ok) throw new Error(`HTTP ${res.status}`);
+                const text = await res.text();
+                respDiv.innerText = text || 'පිළිතුරක් නොමැත.';
+            } catch(pollErr) {
+                // 3) Final GET fallback
+                try {
+                    const getRes = await fetch(`https://text.pollinations.ai/${encodeURIComponent(prompt)}`);
+                    respDiv.innerText = await getRes.text() || 'පිළිතුරක් නොමැත.';
+                } catch(e) {
+                    respDiv.innerText = `❌ AI සේවා දැනට ලබාගත නොහැක. කරුණාකර පසුව උත්සාහ කරන්න.`;
+                }
+            }
+        }
+        btn.disabled=false; btn.textContent='🔮 අහන්න';
+    }
+
+    function askQuick(txt){ document.getElementById('aiPrompt').value=txt; askAI(); }
+    function openAIModal(){ document.getElementById('aiModal').classList.add('active'); document.getElementById('aiPrompt').focus(); }
+    function closeAIModal(){ document.getElementById('aiModal').classList.remove('active'); document.getElementById('aiResponse').innerText='ඔබේ පිළිතුර මෙහි දිස්වනු ඇත...'; document.getElementById('aiPrompt').value=''; }
+    window.onclick = function(e){ if(e.target===document.getElementById('aiModal')) closeAIModal(); if(e.target===document.getElementById('cartModal')) closeCart(); }
+
+    // Initial render
+    renderProducts(); updateCartUI();
 </script>
 </body>
 </html>
