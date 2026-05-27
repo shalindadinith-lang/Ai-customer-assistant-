@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>⌚ TimeCraft – Premium Watch Store with AI Assistant</title>
+  <!-- Puter.js (free frontend AI) -->
+  <script src="https://js.puter.com/v2/"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', system-ui, Arial, sans-serif;
+    }
+
+    body {
+      background: #f5f3ef;
+      color: #2c2c2c;
+    }
+
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #1a1a1a;
+      color: #f0e3c9;
+      padding: 15px 30px;
+      border-radius: 20px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .logo {
+      font-size: 2rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+      color: #e4b45a;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 25px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: #f0e3c9;
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.2s;
+      cursor: pointer;
+    }
+
+    .nav-links a:hover {
+      color: #e4b45a;
+    }
+
+    .cart-icon {
+      background: #e4b45a;
+      color: #1a1a1a;
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cart-icon span {
+      background: white;
+      color: black;
+      border-radius: 50%;
+      padding: 2px 8px;
+      font-size: 0.9rem;
+    }
+
+    /* hero */
+    .hero {
+      background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+      border-radius: 30px;
+      padding: 60px 40px;
+      text-align: center;
+      color: #f0e3c9;
+      margin-bottom: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 15px;
+      font-weight: 800;
+      color: #e4b45a;
+    }
+
+    .hero p {
+      font-size: 1.3rem;
+      margin-bottom: 25px;
+      opacity: 0.9;
+    }
+
+    .hero button {
+      background: #e4b45a;
+      border: none;
+      padding: 14px 35px;
+      border-radius: 50px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: 0.3s;
+      color: #1a1a1a;
+    }
+
+    .hero button:hover {
+      background: #d09c2c;
+      transform: scale(1.03);
+    }
+
+    /* filter section */
+    .filter-bar {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+      align-items: center;
+      background: white;
+      padding: 18px 25px;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .filter-bar input,
+    .filter-bar select {
+      padding: 12px 18px;
+      border-radius: 30px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      background: #fafafa;
+      flex: 1;
+      min-width: 160px;
+    }
+
+    .filter-bar button {
+      background: #1a1a1a;
+      color: #e4b45a;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 30px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    /* product grid */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 25px;
+      margin-bottom: 40px;
+    }
+
+    .product-card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+      transition: 0.3s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    }
+
+    .product-img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      background: #f0f0f0;
+    }
+
+    .product-info {
+      padding: 18px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .product-brand {
+      color: #e4b45a;
+      font-weight: bold;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+    }
+
+    .product-name {
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+
+    .product-price {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #1a1a1a;
+      margin: 5px 0;
+    }
+
+    .product-desc {
+      font-size: 0.85rem;
+      color: #666;
+      flex-grow: 1;
+    }
+
+    .add-to-cart-btn {
+      background: #e4b45a;
+      border: none;
+      padding: 10px;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+      margin-top: 10px;
+    }
+
+    .add-to-cart-btn:hover {
+      background: #ca9a2c;
+    }
+
+    /* cart modal */
+    .cart-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 100%;
+      max-width: 420px;
+      height: 100vh;
+      background: white;
+      box-shadow: -5px 0 25px rgba(0, 0, 0, 0.2);
+      z-index: 2000;
+      padding: 25px;
+      overflow-y: auto;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .cart-modal.active {
+      display: flex;
+    }
+
+    .cart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .cart-items {
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #eee;
+      padding: 12px 0;
+    }
+
+    .cart-total {
+      font-size: 1.4rem;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+
+    .close-cart {
+      background: none;
+      border: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+    }
+
+    /* AI floating button */
+    #aiFloatingBtn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #e4b45a;
+      color: #1a1a1a;
+      border: none;
+      border-radius: 60px;
+      padding: 15px 25px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(228, 180, 90, 0.5);
+      z-index: 1500;
+      transition: 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #aiFloatingBtn:hover {
+      transform: scale(1.05);
+      background: #ca9a2c;
+    }
+
+    .ai-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 3000;
+    }
+
+    .ai-modal.active {
+      display: flex;
+    }
+
+    .ai-chat {
+      background: white;
+      border-radius: 25px;
+      padding: 30px;
+      width: 90%;
+      max-width: 650px;
+      max-height: 85vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    }
+
+    .ai-chat h3 {
+      color: #1a1a1a;
+      border-bottom: 2px solid #e4b45a;
+      padding-bottom: 10px;
+    }
+
+    .quick-btns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .quick-btns button {
+      background: #f0e3c9;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    #aiPrompt {
+      width: 100%;
+      padding: 14px;
+      border-radius: 15px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      resize: vertical;
+    }
+
+    #aiResponse {
+      background: #f8f8f8;
+      padding: 18px;
+      border-radius: 15px;
+      min-height: 80px;
+      white-space: pre-wrap;
+      font-size: 0.95rem;
+      max-height: 250px;
+      overflow-y: auto;
+    }
+
+    .ai-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+    }
+
+    .btn-primary {
+      background: #e4b45a;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 30px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-secondary {
+      background: #ccc;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 30px;
+      cursor: pointer;
+    }
+
+    /* footer */
+    .footer {
+      text-align: center;
+      padding: 25px;
+      color: #888;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .hero h1 {
+        font-size: 2rem;
+      }
+      .filter-bar {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="logo">⌚ TIMECRAFT</div>
+      <div class="nav-links">
+        <a onclick="document.getElementById('productsSection').scrollIntoView({behavior:'smooth'})">All Watches</a>
+        <a onclick="document.getElementById('productsSection').scrollIntoView({behavior:'smooth'})">Men</a>
+        <a onclick="document.getElementById('productsSection').scrollIntoView({behavior:'smooth'})">Women</a>
+      </div>
+      <div class="cart-icon" onclick="openCart()">
+        🛒 Cart <span id="cartCount">0</span>
+      </div>
+    </div>
+
+    <!-- Hero -->
+    <div class="hero">
+      <h1>Discover Timeless Elegance</h1>
+      <p>From classic analog to modern smartwatches – find your perfect wrist companion.</p>
+      <button onclick="document.getElementById('productsSection').scrollIntoView({behavior:'smooth'})">🛍️ Shop Now</button>
+    </div>
+
+    <!-- Filter & Search -->
+    <div class="filter-bar" id="productsSection">
+      <input type="text" id="searchName" placeholder="🔍 Search by name..." oninput="applyFilters()">
+      <select id="brandFilter" onchange="applyFilters()">
+        <option value="">All Brands</option>
+        <option value="Rolex">Rolex</option>
+        <option value="Casio">Casio</option>
+        <option value="Fossil">Fossil</option>
+        <option value="Timex">Timex</option>
+        <option value="Apple">Apple</option>
+        <option value="Samsung">Samsung</option>
+      </select>
+      <input type="number" id="minPrice" placeholder="Min price (LKR)" oninput="applyFilters()">
+      <input type="number" id="maxPrice" placeholder="Max price (LKR)" oninput="applyFilters()">
+      <button onclick="applyFilters()">Apply Filters</button>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="product-grid" id="productGrid"></div>
+
+    <!-- Footer -->
+    <div class="footer">© 2025 TimeCraft – AI‑powered watch store. All rights reserved.</div>
+  </div>
+
+  <!-- Cart Sidebar -->
+  <div class="cart-modal" id="cartModal">
+    <div class="cart-header">
+      <h2>🛒 Your Cart</h2>
+      <button class="close-cart" onclick="closeCart()">&times;</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-total">Total: Rs. <span id="cartTotal">0</span></div>
+    <button class="btn-primary" onclick="alert('Thank you for your purchase!')">✅ Checkout</button>
+  </div>
+
+  <!-- AI Assistant Button & Modal -->
+  <button id="aiFloatingBtn" onclick="openAIModal()">🤖 Ask AI Assistant</button>
+  <div class="ai-modal" id="aiModal">
+    <div class="ai-chat">
+      <h3>🤖 AI Watch Expert</h3>
+      <div class="quick-btns">
+        <button onclick="askQuick('Show me watches under Rs.5000')">💰 Under 5000</button>
+        <button onclick="askQuick('Best analog watches for office')">👔 Office Analog</button>
+        <button onclick="askQuick('Recommend a gift for my boyfriend')">🎁 Gift for him</button>
+        <button onclick="askQuick('Show leather strap watches')">🧵 Leather strap</button>
+        <button onclick="askQuick('Top 3 most popular watches')">⭐ Popular picks</button>
+      </div>
+      <textarea id="aiPrompt" rows="3" placeholder="Ask me anything about our watch collection, prices, recommendations..."></textarea>
+      <div id="aiResponse">Your answer will appear here...</div>
+      <div class="ai-buttons">
+        <button id="askAiBtn" class="btn-primary" onclick="askAI()">🔮 Ask</button>
+        <button class="btn-secondary" onclick="closeAIModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ---------- WATCH PRODUCT DATA ----------
+    const products = [
+      { id: 1, name: "Classic Datejust", brand: "Rolex", price: 12500, image: "https://placehold.co/400x400/1a1a1a/ffffff?text=Rolex+Datejust", category: "Analog", strap: "Metal", desc: "Elegant automatic watch with date window. Stainless steel case." },
+      { id: 2, name: "G-Shock Master", brand: "Casio", price: 4500, image: "https://placehold.co/400x400/2c3e50/ffffff?text=Casio+G-Shock", category: "Digital", strap: "Rubber", desc: "Tough solar-powered digital watch, water resistant 200m." },
+      { id: 3, name: "Chronograph Sport", brand: "Fossil", price: 7800, image: "https://placehold.co/400x400/8b6f4c/ffffff?text=Fossil+Chronograph", category: "Analog", strap: "Leather", desc: "Brown leather strap, quartz movement, chronograph dials." },
+      { id: 4, name: "Weekender 40", brand: "Timex", price: 3200, image: "https://placehold.co/400x400/3d5a80/ffffff?text=Timex+Weekender", category: "Analog", strap: "Fabric", desc: "Casual fabric strap, Indiglo night-light, 40mm case." },
+      { id: 5, name: "Apple Watch SE", brand: "Apple", price: 15800, image: "https://placehold.co/400x400/000000/ffffff?text=Apple+Watch+SE", category: "Smart", strap: "Silicone", desc: "Smartwatch with fitness tracking, heart rate monitor, GPS." },
+      { id: 6, name: "Galaxy Watch 6", brand: "Samsung", price: 11200, image: "https://placehold.co/400x400/1428a0/ffffff?text=Samsung+Galaxy+Watch", category: "Smart", strap: "Silicone", desc: "Wear OS smartwatch, body composition analysis, sleep tracking." },
+      { id: 7, name: "Edifice Chronograph", brand: "Casio", price: 6200, image: "https://placehold.co/400x400/4a4e69/ffffff?text=Casio+Edifice", category: "Analog", strap: "Metal", desc: "Stainless steel band, 100m water resistance, stopwatch." },
+      { id: 8, name: "Fossil Hybrid HR", brand: "Fossil", price: 9500, image: "https://placehold.co/400x400/5d5c61/ffffff?text=Fossil+Hybrid", category: "Hybrid", strap: "Leather", desc: "Hybrid smartwatch with always-on e-ink display." },
+      { id: 9, name: "Easy Reader 38mm", brand: "Timex", price: 2800, image: "https://placehold.co/400x400/9a8c98/ffffff?text=Timex+Easy+Reader", category: "Analog", strap: "Leather", desc: "Classic design, easy-to-read dial, affordable elegance." },
+      { id: 10, name: "Rolex Submariner", brand: "Rolex", price: 28500, image: "https://placehold.co/400x400/1b1b1b/ffffff?text=Rolex+Submariner", category: "Analog", strap: "Metal", desc: "Legendary diving watch, ceramic bezel, automatic movement." },
+      { id: 11, name: "Apple Watch Ultra 2", brand: "Apple", price: 24500, image: "https://placehold.co/400x400/ff9f1c/ffffff?text=Apple+Watch+Ultra", category: "Smart", strap: "Titanium", desc: "Rugged adventure smartwatch, dual-frequency GPS, 36h battery." },
+      { id: 12, name: "Galaxy Fit 3", brand: "Samsung", price: 5400, image: "https://placehold.co/400x400/0077b6/ffffff?text=Samsung+Fit", category: "Fitness", strap: "Silicone", desc: "Lightweight fitness band, AMOLED display, sleep coach." }
+    ];
+
+    let cart = [];
+
+    // ---------- RENDER PRODUCTS ----------
+    function renderProducts(filtered = products) {
+      const grid = document.getElementById('productGrid');
+      grid.innerHTML = '';
+      if (filtered.length === 0) {
+        grid.innerHTML = '<p style="grid-column:1/-1; text-align:center; padding:40px;">No watches found. Try different filters.</p>';
+        return;
+      }
+      filtered.forEach(prod => {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.innerHTML = `
+          <img src="${prod.image}" alt="${prod.name}" class="product-img">
+          <div class="product-info">
+            <span class="product-brand">${prod.brand}</span>
+            <h3 class="product-name">${prod.name}</h3>
+            <p class="product-price">Rs. ${prod.price.toLocaleString()}</p>
+            <p class="product-desc">${prod.desc}</p>
+            <button class="add-to-cart-btn" onclick="addToCart(${prod.id})">🛒 Add to Cart</button>
+          </div>`;
+        grid.appendChild(card);
+      });
+    }
+
+    // ---------- APPLY FILTERS ----------
+    function applyFilters() {
+      const search = document.getElementById('searchName').value.toLowerCase().trim();
+      const brand = document.getElementById('brandFilter').value;
+      const min = parseFloat(document.getElementById('minPrice').value) || 0;
+      const max = parseFloat(document.getElementById('maxPrice').value) || Infinity;
+
+      const filtered = products.filter(p => {
+        const nameMatch = p.name.toLowerCase().includes(search);
+        const brandMatch = brand === '' || p.brand === brand;
+        const priceMatch = p.price >= min && p.price <= max;
+        return nameMatch && brandMatch && priceMatch;
+      });
+      renderProducts(filtered);
+    }
+
+    // ---------- CART OPERATIONS ----------
+    function addToCart(productId) {
+      const product = products.find(p => p.id === productId);
+      if (!product) return;
+      const existing = cart.find(item => item.id === productId);
+      if (existing) {
+        existing.quantity += 1;
+      } else {
+        cart.push({ ...product, quantity: 1 });
+      }
+      updateCartUI();
+    }
+
+    function removeFromCart(productId) {
+      cart = cart.filter(item => item.id !== productId);
+      updateCartUI();
+    }
+
+    function updateCartUI() {
+      const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+      document.getElementById('cartCount').textContent = count;
+      const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      document.getElementById('cartTotal').textContent = total.toLocaleString();
+      const cartItemsDiv = document.getElementById('cartItems');
+      cartItemsDiv.innerHTML = '';
+      cart.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+        div.innerHTML = `
+          <div><strong>${item.name}</strong> (x${item.quantity})</div>
+          <div>Rs. ${(item.price * item.quantity).toLocaleString()}</div>
+          <button style="background:none;border:none;color:red;cursor:pointer;" onclick="removeFromCart(${item.id})">🗑️</button>`;
+        cartItemsDiv.appendChild(div);
+      });
+    }
+
+    function openCart() {
+      document.getElementById('cartModal').classList.add('active');
+    }
+
+    function closeCart() {
+      document.getElementById('cartModal').classList.remove('active');
+    }
+
+    // ---------- AI ASSISTANT ----------
+    function openAIModal() {
+      document.getElementById('aiModal').classList.add('active');
+      document.getElementById('aiPrompt').focus();
+    }
+
+    function closeAIModal() {
+      document.getElementById('aiModal').classList.remove('active');
+      document.getElementById('aiResponse').innerText = 'Your answer will appear here...';
+      document.getElementById('aiPrompt').value = '';
+    }
+
+    // Build context with product data for AI
+    function buildWatchContext() {
+      const catalog = products.map(p => `- ${p.name} by ${p.brand}, Rs.${p.price} (${p.strap} strap, ${p.category})`).join('\n');
+      return `You are a watch expert assistant for "TimeCraft" store. Help customers find the perfect watch based on their preferences. Our current catalog:\n${catalog}\n\nAnswer concisely, highlight price and features. If a customer asks for a price range, show only watches in that range. Always mention brand, price, and strap type.`;
+    }
+
+    async function askAI() {
+      const prompt = document.getElementById('aiPrompt').value.trim();
+      const respDiv = document.getElementById('aiResponse');
+      const btn = document.getElementById('askAiBtn');
+      if (!prompt) {
+        respDiv.innerText = '⚠️ Please enter a question.';
+        return;
+      }
+      btn.disabled = true;
+      btn.textContent = '⏳ Thinking...';
+      respDiv.innerText = 'Consulting our AI expert...';
+
+      const systemContext = buildWatchContext();
+      const fullPrompt = `${systemContext}\n\nCustomer query: ${prompt}`;
+
+      // Primary: Puter.js
+      try {
+        const answer = await puter.ai.chat(fullPrompt, { model: 'gpt-4o' });
+        respDiv.innerText = answer;
+      } catch (putError) {
+        console.warn('Puter failed, trying Pollinations fallback...', putError);
+        // Fallback: Pollinations.AI (free, no key)
+        try {
+          const pollRes = await fetch('https://text.pollinations.ai/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ prompt: fullPrompt })
+          });
+          if (!pollRes.ok) throw new Error(`HTTP ${pollRes.status}`);
+          const text = await pollRes.text();
+          respDiv.innerText = text || 'No response from Pollinations.';
+        } catch (pollError) {
+          respDiv.innerText = `❌ AI services temporarily unavailable. Please try again later.\n(Puter: ${putError.message}, Pollinations: ${pollError.message})`;
+        }
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '🔮 Ask';
+      }
+    }
+
+    function askQuick(promptText) {
+      document.getElementById('aiPrompt').value = promptText;
+      askAI();
+    }
+
+    // ---------- INITIAL RENDER ----------
+    renderProducts();
+    updateCartUI();
+
+    // Close modals on outside click
+    window.onclick = function(event) {
+      const aiModal = document.getElementById('aiModal');
+      if (event.target === aiModal) closeAIModal();
+      const cartModal = document.getElementById('cartModal');
+      if (event.target === cartModal) closeCart();
+    }
+  </script>
+</body>
+</html>
